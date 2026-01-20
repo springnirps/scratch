@@ -1,39 +1,26 @@
-package com.example.cas.delegated;
+Actions:
+  - Identifier: BuildCAS
+    Name: Build CAS with Corretto 21
+    Configuration:
+      Container:
+        Image: "CodeCatalystLinux_x86_64:2024_03"
+    Steps:
+      - Name: Install Corretto 21
+        Run: |
+          sudo rpm --import https://yum.corretto.aws/corretto.key
+          sudo curl -L -o /etc/yum.repos.d/corretto.repo https://yum.corretto.aws/corretto.repo
+          sudo yum install -y java-21-amazon-corretto-devel
 
-import org.apereo.cas.support.pac4j.authentication.DelegatedClientAuthenticationRequestCustomizer;
-import org.pac4j.core.client.Client;
-import org.springframework.stereotype.Component;
+          # Derive JAVA_HOME from default install path
+          export JAVA_HOME=/usr/lib/jvm/java-21-amazon-corretto.x86_64
+          if [ ! -d "$JAVA_HOME" ]; then
+            # Fallback if arch suffix differs
+            export JAVA_HOME=$(dirname "$(readlink -f /etc/alternatives/java_sdk_21)")
+          fi
+          export PATH=$JAVA_HOME/bin:$PATH
 
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
-
-@Component
-public class StoreDelegatedRequestCustomizer implements DelegatedClientAuthenticationRequestCustomizer {
-
-    @Override
-    public Map<String, String> customizeRequestParameters(
-        final Map<String, String> parameters,
-        final HttpServletRequest request,
-        final Client client
-    ) {
-        // Copy parameters so we don't mutate the input map directly (CAS may use immutable maps)
-        Map<String, String> updated = new HashMap<>(parameters);
-
-        // Read TARGET from the original CAS request
-        String target = request.getParameter("TARGET");
-        if (target != null && target.contains("foobar/store")) {
-            // Append cas_client=store to the outgoing authn request
-            updated.put("cas_client", "store");
-        }
-
-        return updated;
-    }
-}
-
-This bean is auto-discovered if component scanning covers its package; otherwise, declare it explicitly in your CAS configuration class:
-
-@Bean
-public DelegatedClientAuthenticationRequestCustomizer storeDelegatedRequestCustomizer() {
-    return new StoreDelegatedRequestCustomizer();
-}
+          java -version
+      - Name: Build CAS
+        Run: |
+          java -version
+          ./gradlew clean build --no-daemon --stacktrace
