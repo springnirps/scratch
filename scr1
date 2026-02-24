@@ -1,1 +1,72 @@
-ss
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.session.data.redis.RedisSessionRepository;
+import org.springframework.session.data.redis.config.ConfigureRedisAction;
+
+import java.time.Duration;
+
+@Configuration
+public class CasRedisSessionConfig {
+
+    @Value("${spring.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.redis.port:6379}")
+    private int redisPort;
+
+    @Value("${spring.redis.password:}")
+    private String redisPassword;
+
+    @Value("${spring.redis.ssl:false}")
+    private boolean useSsl;
+
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+        if (redisPassword != null && !redisPassword.isEmpty()) {
+            serverConfig.setPassword(redisPassword);
+        }
+
+        LettuceClientConfiguration.LettuceClientConfigurationBuilder clientBuilder =
+            LettuceClientConfiguration.builder()
+                .commandTimeout(Duration.ofSeconds(10));
+
+        if (useSsl) {
+            clientBuilder.useSsl();
+        }
+
+        return new LettuceConnectionFactory(serverConfig, clientBuilder.build());
+    }
+
+    @Bean
+    public ConfigureRedisAction configureRedisAction() {
+        return ConfigureRedisAction.NO_OP;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> sessionRedisTemplate(
+            RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        template.setConnectionFactory(redisConnectionFactory);
+        template.setKeySerializer(RedisSerializer.string());
+        template.setHashKeySerializer(RedisSerializer.string());
+        return template;
+    }
+
+    @Bean
+    @Primary
+    public RedisSessionRepository sessionRepository(
+            RedisTemplate<String, Object> sessionRedisTemplate) {
+        RedisSessionRepository repo = new RedisSessionRepository(sessionRedisTemplate);
+        repo.setDefaultMaxInactiveInterval(Duration.ofHours(1));
+        repo.setRedisKeyNamespace("cas");
+        return repo;
+    }
+}
