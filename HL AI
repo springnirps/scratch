@@ -1,29 +1,41 @@
-1. AI Search
-Vanilla’s AI Search Assistant provides conversational answers based on community discussions and knowledge articles, with source citations for verification.
+1. AI Search — proposed evaluation workflow
+Evaluate the AI Search Assistant’s ability to produce correct, useful answers from community content, not just whether it returns relevant links. Vanilla describes the assistant as using retrieval-augmented generation to search community knowledge and generate answers dynamically.
 
-Benefit type	Business benefits
-Qualitative	Improve customer experience by making technical answers easier to find through natural-language questions.
-Qualitative	Improve access to existing community knowledge by summarizing relevant information and linking to supporting sources.
-Qualitative	Allow support engineers and subject-matter experts to focus on complex issues rather than repeatedly answering common questions.
-Quantitative	Reduce average time required to find a correct technical answer.
-Quantitative	Increase the percentage of customer questions resolved through self-service.
-Quantitative	Reduce repetitive support tickets and associated support-handling effort.
-Suggested evaluation measures
-Time to answer: Compare average task-completion time with current search versus AI Search using the same representative technical questions.
+Step	Evaluation activity	Expected output
+1. Define scope and success criteria	Select priority customer journeys, such as product selection, configuration, troubleshooting, and finding documentation. Agree on quality, speed, and security requirements.	Approved evaluation scope and scorecard.
+2. Build a representative test set	Collect 30–50 real customer questions, including common questions, technical terms, ambiguous questions, and questions with no answer in the community. Have subject-matter experts identify expected answers and supporting sources.	Validated questions and reference answers.
+3. Establish the baseline	Ask participants to resolve the questions using existing search. Record time, correctness, successful resolution, and whether support assistance is needed.	Current-search performance baseline.
+4. Configure and test AI Search	Enable the feature in a vendor-supported test environment. Run comparable tasks and review answer accuracy, completeness, source support, response time, and handling of unanswered questions. Test with different user roles to check for restricted-content exposure.	AI Search results and issue log.
+5. Run a limited user pilot	Include customers or representative users, support engineers, and community managers. Collect task completion results, confidence ratings, and feedback on misleading or incomplete answers.	User feedback and measured performance differences.
+6. Assess value and decide	Compare quality and time savings against incremental licensing and operating costs. Identify content gaps separately from feature limitations.	Go, remediate and retest, or no-go recommendation.
+Key measures
+Answer quality: Percentage of responses judged correct, sufficiently complete, and supported by the cited sources.
 
-Successful self-service rate: Measure the percentage of evaluated questions correctly resolved without human assistance.
+Task success: Percentage of questions resolved correctly without human assistance.
 
-Support effort avoided: Estimate incremental tickets avoided × average handling time × loaded support labor rate.
+Efficiency: Change in median time to a correct answer.
 
-Do not count every AI interaction as an avoided ticket; count only cases where evidence indicates the user would otherwise have contacted support.
+Safety: Restricted-content exposure and materially incorrect technical guidance.
 
-2. AI Translations
-Vanilla translates supported discussions, comments, and knowledge articles into configured languages, while retaining access to the original text. Custom terms help maintain consistent product and community terminology.
+Business value: Estimated support effort avoided, validated through pilot evidence—not simply the number of AI searches.
 
-Benefit type	Business benefits
-Qualitative	Improve access to technical knowledge for customers who prefer languages other than the source language.
-Qualitative	Enable knowledge sharing across regions and reduce language barriers to community participation.
-Qualitative	Improve consistency of product terminology through configured custom translations.
-Quantitative	Reduce manual translation and review effort for eligible community content.
-Quantitative	Reduce turnaround time to make new or updated content available in supported languages.
-Quantitative	Increase multilingual content coverage and engagement among target-lang
+2. AI Translations — proposed evaluation workflow
+Evaluate whether translated content is usable and technically accurate, rather than simply whether a translation appears. Vanilla supports AI translation of community content and custom terminology, which makes both language quality and product-term consistency relevant evaluation areas.
+
+Step	Evaluation activity	Expected output
+1. Define languages and content scope	Select 2–3 priority languages based on customer needs. Include knowledge articles, discussions, and comments containing representative technical content.	Language and content test matrix.
+2. Establish the baseline	Measure current translation effort, review cost, turnaround time, and content coverage. If content is not currently translated, record that rather than assuming an existing translation cost.	Current localization baseline.
+3. Configure terminology	Define preferred translations for product terms and terminology that must remain unchanged. Review the glossary with regional and technical reviewers.	Approved terminology glossary.
+4. Generate and review translations	Have qualified bilingual reviewers assess meaning, technical accuracy, readability, and terminology consistency. Check that part numbers, units, code snippets, links, and formatting remain usable.	Quality scores and correction-effort log by language.
+5. Test content lifecycle and user experience	Verify language selection, access to the original text, behavior after source edits, and the effect of glossary changes on existing translations. Explicitly test these behaviors rather than assuming automatic updates.	Validated behavior and documented limitations.
+6. Pilot and assess value	Let target-language users complete representative information-finding tasks. Compare comprehension, turnaround, and total translation/review effort against the baseline.	Rollout recommendation by language and content type.
+Key measures
+Translation quality: Percentage of samples accepted without material correction, reported separately for each language.
+
+Terminology compliance: Percentage of required terms translated or preserved correctly.
+
+Review effort: Reviewer minutes per article or per 1,000 source words.
+
+Turnaround: Time from source publication to an acceptable translated version.
+
+Coverage and usability: Priority content available in each language and users’ ability to understand it successfully.
