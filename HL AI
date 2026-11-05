@@ -1,0 +1,29 @@
+1. AI Search
+Vanilla’s AI Search Assistant provides conversational answers based on community discussions and knowledge articles, with source citations for verification.
+
+Benefit type	Business benefits
+Qualitative	Improve customer experience by making technical answers easier to find through natural-language questions.
+Qualitative	Improve access to existing community knowledge by summarizing relevant information and linking to supporting sources.
+Qualitative	Allow support engineers and subject-matter experts to focus on complex issues rather than repeatedly answering common questions.
+Quantitative	Reduce average time required to find a correct technical answer.
+Quantitative	Increase the percentage of customer questions resolved through self-service.
+Quantitative	Reduce repetitive support tickets and associated support-handling effort.
+Suggested evaluation measures
+Time to answer: Compare average task-completion time with current search versus AI Search using the same representative technical questions.
+
+Successful self-service rate: Measure the percentage of evaluated questions correctly resolved without human assistance.
+
+Support effort avoided: Estimate incremental tickets avoided × average handling time × loaded support labor rate.
+
+Do not count every AI interaction as an avoided ticket; count only cases where evidence indicates the user would otherwise have contacted support.
+
+2. AI Translations
+Vanilla translates supported discussions, comments, and knowledge articles into configured languages, while retaining access to the original text. Custom terms help maintain consistent product and community terminology.
+
+Benefit type	Business benefits
+Qualitative	Improve access to technical knowledge for customers who prefer languages other than the source language.
+Qualitative	Enable knowledge sharing across regions and reduce language barriers to community participation.
+Qualitative	Improve consistency of product terminology through configured custom translations.
+Quantitative	Reduce manual translation and review effort for eligible community content.
+Quantitative	Reduce turnaround time to make new or updated content available in supported languages.
+Quantitative	Increase multilingual content coverage and engagement among target-lang
